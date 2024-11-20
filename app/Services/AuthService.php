@@ -4,6 +4,6 @@ namespace App\Services;
 
 interface AuthService {
 
-public function authenticate(string $username, string $password);
+public function authenticate($request);
     
 }

@@ -18,10 +18,28 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $username = $request->name;
+ 
+        $username = $request->email;
         $password = $request->password;
 
-        $auth = $this->authService->authenticate($username, $password);
+        $credencial = [
+            "email" => $username,
+            "password" => $password
+        ];
+
+        // $remember = ($request->hash('remember') ? true : false);
+
+        if (Auth::attempt($credencial)) {
+            return response()->json('success', true);
+        }else {
+            return response()->json('error', false);
+        }
+
+        // $auth = $this->authService->authenticate($request);
+
+        // if($auth){
+        //     return response()->json($auth, 200);
+        // }
     
     }
 }
