@@ -18,19 +18,10 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $username = $request->name;
+        $password = $request->password;
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
-            return response()->json([
-                'message' => 'Login successful',
-                'user' => $user
-            ], 200);
-        }
-
-        return response()->json(['message' => 'Invalid credentials'], 401); 
+        $auth = $this->authService->authenticate($username, $password);
+    
     }
 }

@@ -5,5 +5,14 @@ namespace App\Services\Implementations;
 use App\Services\AuthService;
 
 class AuthServiceImpl implements AuthService {
-    // Implementar los métodos del servicio
+    
+    public function authenticate(string $username, string $password) 
+    {
+        $credencial = [
+            "email" => $username,
+            "password" => $password
+        ];
+
+        
+    }
 }
