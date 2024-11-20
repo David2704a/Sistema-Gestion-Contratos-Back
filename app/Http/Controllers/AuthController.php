@@ -19,27 +19,24 @@ class AuthController extends Controller
     public function login(Request $request)
     {
  
-        $username = $request->email;
-        $password = $request->password;
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        $credencial = [
-            "email" => $username,
-            "password" => $password
-        ];
-
-        // $remember = ($request->hash('remember') ? true : false);
-
-        if (Auth::attempt($credencial)) {
-            return response()->json('success', true);
-        }else {
-            return response()->json('error', false);
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => 'Correo o contrasena invalida'], 401);
         }
 
-        // $auth = $this->authService->authenticate($request);
+        $user = $request->user();
 
-        // if($auth){
-        //     return response()->json($auth, 200);
-        // }
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Inicio de sesion exitoso',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ]);
     
     }
 }
